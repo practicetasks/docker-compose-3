@@ -1,0 +1,26 @@
+services:
+  main-service:
+    build: main-server/.
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sub-service
+      - postgres-service
+    environment:
+      - DB_HOST=postgres-service
+      - DB_NAME=main-database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  sub-service:
+    build: sub-server/.
+    ports:
+      - "9090:9090"
+
+  postgres-service:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=main-database
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
